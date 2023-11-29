@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chose Month and Year</title>
+    <!-- Add any additional styling or scripts if needed -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="container">
+    <h1>Choose Month and Year</h1>
+
+    <form th:action="@{/ordByEmpInMonth}" method="post">
+        <div th:if="${error != null and not #strings.isEmpty(error)}" class="alert alert-danger" th:text="${error}"></div>
+
+        <div class="form-group">
+            <label for="selectedYear">Select Year:</label>
+            <select class="form-control" id="selectedYear" name="selectedYear">
+                <!-- Thêm năm từ 2021 đến 2023 vào thanh select -->
+                <option th:each="year : ${#numbers.sequence(2021, 2023)}" th:value="${year}" th:text="${year}"></option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="selectedMonth">Select Month:</label>
+            <select class="form-control" id="selectedMonth" name="selectedMonth">
+                <!-- Thêm tháng từ 1 đến 12 vào thanh select -->
+                <option th:each="month : ${#numbers.sequence(1, 12)}" th:value="${month}" th:text="${month}"></option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+</body>
+</html>

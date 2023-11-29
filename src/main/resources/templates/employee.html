@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Danh sách nhân viên</title>
+    <!-- Đường dẫn đến các tệp CSS và JS của Bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="container">
+    <h1 class="mt-5">Danh sách nhân viên</h1>
+    <!-- Nút Thêm Nhân viên -->
+    <a th:href="@{'/addEmp/'+${empID}}" class="btn btn-primary mt-3 mb-3">Thêm Nhân viên</a>
+    <a th:href="@{/ordByDate}" class="btn btn-warning mt-3 mb-3">Thống kê Order theo ngày</a>
+    <a th:href="@{/ordByEmpInMonth}" class="btn btn-info mt-3 mb-3">Thống kê Order theo nhân viên trong 1 tháng</a>
+
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Tên</th>
+            <th>Địa chỉ</th>
+            <th>Email</th>
+            <th>Số điện thoại</th>
+            <th>Ngày sinh</th>
+            <th>Trạng thái</th>
+            <th>Thao tác</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="employee : ${employees}">
+            <td th:text="${employee.getEmp_id()}"></td>
+            <td th:text="${employee.getFullName()}"></td>
+            <td th:text="${employee.getAddress()}"></td>
+            <td th:text="${employee.getEmail()}"></td>
+            <td th:text="${employee.getPhone()}"></td>
+            <td th:text="${#temporals.format(employee.getDob(), 'dd/MM/yyyy')}"></td>
+            <td>
+                <span th:switch="${employee.getStatus()}">
+                    <span th:case="0">STOPED</span>
+                    <span th:case="1">ACTIVE</span>
+                    <span th:case="2">TERMINATED</span>
+                </span>
+            </td>
+            <td>
+                <a th:href="@{'/updateEmp/' + ${employee.getEmp_id()}+'/'+${empID}}"
+                   class="btn btn-primary btn-sm btn-block">Sửa</a>
+                <a th:href="@{'/deleteEmp/' + ${employee.getEmp_id()}+'/'+${empID}}"
+                   class="btn btn-danger btn-sm btn-block">Xóa</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <!-- Pagination -->
+    <div>
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center">
+                <!-- Page Links -->
+                <li th:each="i : ${#numbers.sequence(0, totalPages - 1)}" th:class="${currentPage == i} ? 'page-item active' : 'page-item'">
+                    <a class="page-link" th:href="@{'/employee/'+${empID}+ '?page=' + ${i} + '&size=' + ${pageSize}}" th:text="${i + 1}"></a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+</body>
+</html>

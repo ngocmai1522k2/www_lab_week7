@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping online</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        /* Custom style to ensure uniform size for cards */
+        .card {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        .card-img-top {
+            height: 200px; /* Adjust the height as needed */
+            width: 250px;
+            /*object-fit: cover;*/
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navigation Bar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">Shopping online</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a th:if="${cusID == null}" th:href="@{/login}" class="nav-link">Home</a>
+                <a th:if="${cusID != null}" th:href="@{'/'+${cusID}}" class="nav-link">Home</a>            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/admin-login}">Admin</a>
+            </li>
+            <li class="nav-item">
+                <!-- Cart icon with product count -->
+                <a class="nav-link" href="#" th:if="${ods == null}">
+                    Cart <span class="badge badge-pill badge-secondary">0</span>
+                </a>
+                <a class="nav-link" th:href="@{'/mycart/'+${cusID}}" th:if="${ods != null}">
+                    Cart <span class="badge badge-pill badge-secondary" th:text="${ods.size()}">0</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+
+<!-- Banner -->
+<div class="jumbotron">
+    <h1 class="display-4">Welcome to Our Sale!</h1>
+    <p class="lead">Discover amazing deals on our products.</p>
+</div>
+
+<!-- Product List -->
+<div class="container">
+    <div class="row">
+        <!-- Use Thymeleaf to iterate over the list of products -->
+        <div th:each="product : ${productPricePaths}" class="col-md-3">
+            <div class="card">
+                <!-- Assuming the product has an image URL -->
+                <img th:src="${product.getPath()}" class="card-img-top" alt="Product Image">
+                <div class="card-body">
+                    <h5 class="card-title" th:text="${product.getName()}">Product Name</h5>
+                    <!-- Assuming the product has a description -->
+                    <p class="card-text" th:text="${product.getPrice()}+' $'">Price of Product.</p>
+                    <a th:if="${cusID == null}" th:href="@{/login}" class="btn btn-primary">Add to cart</a>
+                    <a th:if="${cusID != null}" th:href="@{'/addToCart/'+${cusID}+'/'+${product.getProductID()}}" class="btn btn-primary">Add to cart</a>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Pagination -->
+    <div th:if="${cusID == null}">
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center">
+                <!-- Page Links -->
+                <li th:each="i : ${#numbers.sequence(0, totalPages - 1)}" th:class="${currentPage == i} ? 'page-item active' : 'page-item'">
+                    <a class="page-link" th:href="@{'/'+ '?page=' + ${i} + '&size=' + ${pageSize}}" th:text="${i + 1}"></a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    <div th:if="${cusID != null}">
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center">
+                <!-- Page Links -->
+                <li th:each="i : ${#numbers.sequence(0, totalPages - 1)}" th:class="${currentPage == i} ? 'page-item active' : 'page-item'">
+                    <a class="page-link" th:href="@{'/'+${cusID}+ '?page=' + ${i} + '&size=' + ${pageSize}}" th:text="${i + 1}"></a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+<!-- Bootstrap JS and Popper.js -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+</body>
+</html>
