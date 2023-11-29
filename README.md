@@ -5,8 +5,8 @@ Họ tên: [Lê Thị Ngọc Mai]
 MSSV: [20005501]
 ## Mô tả
 
-Dự án Spring Boot với
-![image](https://github.com/ngocmai1522k2/www_lab_week6/assets/144517477/dfa85dea-c09e-4018-bd48-cbeb62d68881)
+Dự án Spring Boot với diagram 
+![image](https://github.com/ngocmai1522k2/www_lab_week7/assets/144517477/3b701c85-f2c1-40e1-b793-d84ef19f5e22)
 
 
 ## Yêu cầu
